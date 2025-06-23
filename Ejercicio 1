@@ -1,0 +1,203 @@
+import os 
+
+sizePag = 60
+compradoresI = {}
+compradoresF = {}
+i = 0
+f = 0
+def menuPrincipal():
+    os.system('cls')
+    print(
+        f'{"-" * int(sizePag/2 - 22)}TOTEM AUTOSERVICIO CONCIERTOS ROCK AND CHILE{"-" * int(sizePag/2 - 22)}\n\n'
+        '1. Comprar entrada a "Los fortificados"\n'
+        '2. Comprar entrada a "Los iluminados"\n'
+        '3. Stock de entradas para ambos conciertos\n'
+        '4. Salir\n'
+    )
+    r = input()
+    match r:
+        case '1':
+            comprarEntradaF()
+        case '2':
+            comprarEntradaI()
+        case '3':
+            stockEntradas()
+        case '4':
+            quit()
+        case _:
+            menuPrincipal()
+        
+def comprarEntradaF():
+    global compradoresF, f
+    tmpPrint = []
+    while True:
+        os.system('cls')
+        print("-"*sizePag)
+        print(f'{"-" * int(sizePag/2 - 18)}COMPRAR ENTRADA A "LOS FORTIFICADOS"{"-" * int(sizePag/2 - 18)}\n')
+        nombre = input('Nombre y apellido del comprador: ')
+        if nombre != '' and nombre != ' ' and len(nombre.split()) >= 2:
+            tmpPrint.append("-"*sizePag)
+            tmpPrint.append(f'{"-" * int(sizePag/2 - 18)}COMPRAR ENTRADA A "LOS FORTIFICADOS"{"-" * int(sizePag/2 - 18)}\n')
+            tmpPrint.append(f'Nombre y apellido del comprador: {nombre}')
+            break
+
+    while True:
+        os.system('cls')
+        for p in tmpPrint:
+            print(p)
+        entrada = input('Tipo de entrada (G/V): ')
+        if entrada.lower() == 'g' or entrada.lower() == 'v':
+            tmpPrint.append(f'Tipo de entrada (G/V): {entrada.upper()}')
+            break
+
+    while True:
+        os.system('cls')
+        for p in tmpPrint:
+            print(p)
+        codigo = input('Codigo de confirmación.\nEste debe contener un minimo de:\n6 caracteres,\n1 letra mayuscula y\n1 numero\n')
+        if len(codigo) >= 6 and any(char.isdigit() for char in codigo) and any(char.isupper() for char in codigo) and not any(char.isspace() for char in codigo):
+            break
+    os.system('cls')
+    tmp = 'Entrada VIP' if entrada == 'V' else 'Entrada General'
+    L4 = 1 if len(nombre) % 2 == 0 else 0
+
+    if any(compradoresF[key]['nombre'] == nombre for key in compradoresF):
+        while True:
+            os.system('cls')
+            print('Error: Usuario ya en el sistema')
+            r = input(
+                '1. Reiniciar compra\n'
+                '2. Volver al menú principal\n'
+            )
+            match r:
+                case '1':
+                    comprarEntradaF()
+                case '2':
+                    menuPrincipal()
+    while True:
+        os.system('cls')
+        print(
+            f'+{"-" * int(sizePag - 2)}+\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'|{" " * int(sizePag/2 - 8)}DATOS DE COMPRA{" " * int(sizePag/2 - 9)}|\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'|{" " * int(sizePag/2 - 14)}CONCIERTO LOS FORTIFICADOS{" " * int(sizePag/2 - 14)}|\n'
+            f'|{" " * int(sizePag/2 - L4 - len(nombre)/2)}{nombre}{" " * int(sizePag/2 - 1 - len(nombre)/2)}|\n'
+            f'|{" " * int(sizePag/2 - len(tmp)/2)}{tmp}{" " * int(sizePag/2 - len(tmp)/2 - 1)}|\n'
+            f'|{" " * int(sizePag/2 - 1 - len(codigo)/2)}{codigo}{" " * int(sizePag/2 - 1 - len(codigo)/2 + int(len(codigo) % 2))}|\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'+{"-" * int(sizePag - 2)}+\n\n'
+            '1. Confirmar compra\n'
+            '2. Reiniciar\n'
+            '3. Volver al menú principal'
+        )
+        r = input()
+        match r:
+            case '1':
+                f += 1
+                compradoresF[f] = {'nombre': nombre, 'entrada': entrada, 'codigo': codigo}
+                os.system('cls')
+                print('Compra realizada con exito')
+                input()
+                menuPrincipal()
+            case '2':
+                comprarEntradaF()
+            case '3':
+                menuPrincipal()
+
+#--------------------------------------------------------------------------------------------------------------------------------
+
+def comprarEntradaI():
+    global compradoresI, i
+    tmpPrint = []
+    while True:
+        os.system('cls')
+        print("-"*sizePag)
+        print(f'{"-" * int(sizePag/2 - 18)}COMPRAR ENTRADA A "LOS ILUMINADOS"{"-" * int(sizePag/2 - 18)}\n')
+        nombre = input('Nombre y apellido del comprador: ')
+        if nombre != '' and nombre != ' ' and len(nombre.split()) >= 2:
+            tmpPrint.append("-"*sizePag)
+            tmpPrint.append(f'{"-" * int(sizePag/2 - 18)}COMPRAR ENTRADA A "LOS ILUMINADOS"{"-" * int(sizePag/2 - 18)}\n')
+            tmpPrint.append(f'Nombre y apellido del comprador: {nombre}')
+            break
+
+    while True:
+        os.system('cls')
+        for p in tmpPrint:
+            print(p)
+        entrada = input('Tipo de entrada (CV/PAL): ')
+        if entrada.lower() == 'cv' or entrada.lower() == 'pal':
+            tmpPrint.append(f'Tipo de entrada (CV/PAL): {entrada.upper()}')
+            break
+
+    while True:
+        os.system('cls')
+        for p in tmpPrint:
+            print(p)
+        codigo = input('Codigo de confirmación.\nEste debe contener un minimo de:\n5 caracteres,\n3 letras mayusculas y\n1 numero\n')
+        if len(codigo) >= 5 and any(char.isdigit() for char in codigo) and not any(char.isspace() for char in codigo):
+            mayus = 0
+            for char in codigo:
+                if char.isupper():
+                    mayus += 1
+            if mayus >= 3:
+                break
+    os.system('cls')
+    tmp = 'CANCHA VIP' if entrada == 'CV' else 'PALCO'
+    L4 = 1 if len(nombre) % 2 == 0 else 0
+
+    if any(compradoresI[key]['nombre'] == nombre for key in compradoresI):
+        while True:
+            os.system('cls')
+            print('Error: Usuario ya en el sistema')
+            r = input(
+                '1. Reiniciar compra\n'
+                '2. Volver al menú principal\n'
+            )
+            match r:
+                case '1':
+                    comprarEntradaI()
+                case '2':
+                    menuPrincipal()
+    while True:
+        os.system('cls')
+        print(
+            f'+{"-" * int(sizePag - 2)}+\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'|{" " * int(sizePag/2 - 8)}DATOS DE COMPRA{" " * int(sizePag/2 - 9)}|\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'|{" " * int(sizePag/2 - 13)}CONCIERTO LOS ILUMINADOS{" " * int(sizePag/2 - 13)}|\n'
+            f'|{" " * int(sizePag/2 - L4 - len(nombre)/2)}{nombre}{" " * int(sizePag/2 - 1 - len(nombre)/2)}|\n'
+            f'|{" " * int(sizePag/2 - 1 - len(tmp)/2)}{tmp}{" " * int(sizePag/2 - len(tmp)/2)}|\n'
+            f'|{" " * int(sizePag/2 - 1 - len(codigo)/2)}{codigo}{" " * int(sizePag/2 - 1 - len(codigo)/2 + int(len(codigo) % 2))}|\n'
+            f'|{" " * int(sizePag - 2)}|\n'
+            f'+{"-" * int(sizePag - 2)}+\n\n'
+            '1. Confirmar compra\n'
+            '2. Reiniciar\n'
+            '3. Volver al menú principal'
+        )
+        r = input()
+        match r:
+            case '1':
+                i += 1
+                compradoresI[i] = {'nombre': nombre, 'entrada': entrada, 'codigo': codigo}
+                os.system('cls')
+                print('Compra realizada con exito')
+                input()
+                menuPrincipal()
+            case '2':
+                comprarEntradaI()
+            case '3':
+                menuPrincipal()
+    
+def stockEntradas():
+    os.system('cls')
+    print(
+        f'Entradas restantes para "Los Fortificados":\n'
+        f'General: {500 - sum(1 for key in compradoresF if compradoresF[key]["entrada"].lower() == "g")}\n'
+        f'VIP: {500 - sum(1 for key in compradoresF if compradoresF[key]["entrada"].lower() == "v")}\n\n'
+        f'Entradas restantes para "Los Iluminados":\n'
+        f'Cancha VIP: {500 - sum(1 for key in compradoresI if compradoresI[key]["entrada"].lower() == "cv")}\n'
+        f'Palco: {500 - sum(1 for key in compradoresI if compradoresI[key]["entrada"].lower() == "pal")}'
+    )
+menuPrincipal()
